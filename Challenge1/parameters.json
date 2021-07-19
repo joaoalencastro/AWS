@@ -1,0 +1,18 @@
+[
+  {
+    "ParameterKey": "InstanceTypeParameter",
+    "ParameterValue": "t3.micro"
+  },
+  {
+    "ParameterKey":"AmiParameter",
+    "ParameterValue": "ami-0ab4d1e9cf9a1215a"
+  },
+  {
+    "ParameterKey":"VpcParameter",
+    "ParameterValue":"vpc-08ba2b75"
+  },
+  {
+    "ParameterKey":"SubnetParameter",
+    "ParameterValue":"subnet-0babbe46"
+  }
+]

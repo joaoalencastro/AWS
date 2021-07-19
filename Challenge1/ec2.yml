@@ -1,0 +1,59 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: This is my first own (Joao Alencastro) cloudformation template
+Parameters:
+  InstanceTypeParameter:
+    Description: EC2 instance type
+    Type: String
+    Default: t3.micro
+    AllowedValues:
+      - t3.micro
+      - t2.micro
+  AmiParameter:
+    Type: String
+  VpcParameter:
+    Type: AWS::EC2::VPC::Id
+  SubnetParameter:
+    Type: AWS::EC2::Subnet::Id
+  
+Resources:
+  myWebAccessSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Grupo de seguranca criado via script yaml"
+      GroupName: "myWebAccessSecurityGroup"
+      VpcId:
+        Ref: VpcParameter
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          FromPort: -1
+          ToPort: -1
+          CidrIp: 0.0.0.0/0
+
+  myWebServerInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      IamInstanceProfile: "Ryan"
+      KeyName: "AWS_EC2_Demo_keypair"
+      ImageId:
+        Ref: AmiParameter
+      InstanceType:
+        Ref: InstanceTypeParameter
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: "true"
+          DeviceIndex: "0"
+          SubnetId:
+            Ref: SubnetParameter
+          GroupSet: 
+            - !Ref myWebAccessSecurityGroup
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          sudo yum update -y
+          sudo yum install -y httpd
+          sudo systemctl start httpd
+          sudo systemctl enable httpd

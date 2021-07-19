@@ -1,0 +1,85 @@
+Description:
+  This is the template for the third challenge of the Infrastructure as Code section of the Udacity's Cloud DevOps Engineer course.
+  Author João Alencastro
+
+Parameters:
+  EnvironmentName:
+    Description: Prefix utilized to locate all the related resources
+    Type: String
+
+# First we'll create the IAM Role, the Instance Profile, then the Security Group, and last the EC2 Instance
+Resources:
+# IAM Role to allow EC2 Session Manager to access our servers
+  RoleForSSMAccess:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "ec2.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Path: "/"
+
+# Instance Profile
+  ServerInstanceProfile:
+    Type: "AWS::IAM::InstanceProfile"
+    Properties:
+      Path: "/"
+      Roles:
+        - Ref: "RoleForSSMAccess"
+
+# Security Group
+  WebAccessSecGroup:
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+      GroupDescription: Security Group for the web server of the third challenge
+      GroupName: !Sub ${EnvironmentName}WebServerSecGroup
+      SecurityGroupEgress: 
+        - IpProtocol: tcp
+          FromPort: 0
+          ToPort: 65535
+          CidrIp: 0.0.0.0/0
+      SecurityGroupIngress: 
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+      VpcId: 
+        Fn::ImportValue:
+          Fn::Sub: "${EnvironmentName}-VPCID"
+
+# Server EC2 Instance
+  ServerInstance:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      IamInstanceProfile: !Ref ServerInstanceProfile
+      ImageId: ami-00ddb0e5626798373
+      InstanceType: t3.micro
+      KeyName: AWS_EC2_Demo_keypair
+      NetworkInterfaces: 
+        - AssociatePublicIpAddress: "true"
+          DeviceIndex: "0"
+          GroupSet: 
+            - Ref: "WebAccessSecGroup"
+          SubnetId: 
+            Fn::ImportValue:
+              Fn::Sub: ${EnvironmentName}-PRIVNET
+      UserData:
+        Fn::Base64: !Sub |
+          #! /bin/bash
+          sudo apt-get update -y
+          sudo apt-get install apache2 -y
+          sudo systemctl start apache2.service
+          cd /var/www/html
+          sed -i 's/Listen 80/Listen 0.0.0.0:80/' /etc/apache2/ports.conf
+          echo "Joao's Web Server up and running!" > index.html
+          sudo systemctl restart apache2.service
+      BlockDeviceMappings: # Aqui é especificado que é um dispositivo, "/dev/sdk"
+      - DeviceName: "/dev/sdk"
+        Ebs:
+          VolumeSize: '10' # e que o seu volume necessário é de 10 GB
