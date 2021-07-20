@@ -110,10 +110,10 @@ Resources:
     Properties:
       VPCZoneIdentifier:
       - Fn::ImportValue: 
-          !Sub "${EnvironmentName}-PRIV-NETS"
+          !Sub "${EnvironmentName}-PUB-NETS"
       LaunchConfigurationName: !Ref WebLauchConfig
-      MinSize: '1'
-      MaxSize: '1'
+      MinSize: '2'
+      MaxSize: '2'
       TargetGroupARNs:
       - Ref: WebServerTargetGroup
 
