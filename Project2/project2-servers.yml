@@ -151,8 +151,10 @@ Resources:
       - Type: forward
         TargetGroupArn: !Ref WebServerTargetGroup
       Conditions:
-      - Field: path-pattern
-        Values: [/]
+      - Field: http-request-method
+        HttpRequestMethodConfig: {
+          "Values": ["GET"]
+        }
       ListenerArn: !Ref Listener
       Priority: 1
 
@@ -174,6 +176,6 @@ Resources:
 Outputs: 
   URL:
     Description: A reference for the URL of the WebApp
-    Value: !GetAtt LoadBalancer.DNSName
+    Value: !Join [ '' , ['http://' , !GetAtt LoadBalancer.DNSName ] ]
     Export:
       Name: !Sub ${EnvironmentName}-URL
