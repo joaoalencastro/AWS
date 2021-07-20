@@ -35,7 +35,7 @@ Resources:
       ManagedPolicyArns:
       - arn:aws:s3:::udacity-demo-1/*
 
-  #instace profile contains the IAM Role name(s) that we want to associate to our auto scaling EC2 Servers
+# Instace profile contains the IAM Role name(s) that we want to associate to our auto scaling EC2 Servers
   ProfileWithRolesForOurApp:
     Type: AWS::IAM::InstanceProfile
     Properties: 
@@ -105,6 +105,8 @@ Resources:
           cd /var/www/html
           aws s3 cp s3://udacity-demo-1/udacity.zip .
           unzip -o udacity.zip
+
+# LoadBalancer
 
 Outputs: 
   #Bonus points for useful outputs!
