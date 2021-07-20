@@ -4,11 +4,27 @@
         "ParameterValue":"Project2"
     },
     {
-        "ParameterKey":"Keypair",
+        "ParameterKey":"WebServerKeypair",
         "ParameterValue":"AWS_EC2_Demo_keypair"
     },
     {
-        "ParameterKey":"Ami",
+        "ParameterKey":"WebServerAmi",
         "ParameterValue":"ami-0747bdcabd34c712a"
+    },
+    {
+        "ParameterKey":"WebServerInstanceType",
+        "ParameterValue":"t2.medium"
+    },
+    {
+        "ParameterKey":"JumpboxKeypair",
+        "ParameterValue":"jumpbox-key"
+    },
+    {
+        "ParameterKey":"JumpboxAmi",
+        "ParameterValue":"ami-0dc2d3e4c0f9ebd18"
+    },
+    {
+        "ParameterKey":"JumpboxInstanceType",
+        "ParameterValue":"t2.micro"
     }
 ]

@@ -3,16 +3,29 @@ Description:
   Made By João Alencastro
 
 Parameters:
-# whatever you consider a changing value, put it as a parameter instead of hard-coding it into your script
   EnvironmentName:
     Description: Prefix for the project resources
     Type: String
-  Keypair:
-    Description: Prefered public key for authentication
+  WebServerKeypair:
+    Description: Prefered public key for authentication in the web servers
     Type: String
-  Ami:
-    Description: AMI to use
+  WebServerAmi:
+    Description: web servers's AMI
     Type: String
+  WebServerInstanceType:
+    Description: Instance type used in the web servers
+    Type: String
+    Default: t2.medium
+  JumpboxKeypair:
+    Description: Prefered public key for bastion host's authentication
+    Type: String
+  JumpboxAmi:
+    Description: bastion host's AMI
+    Type: String
+  JumpboxInstanceType:
+    Description: bastion host's Instance type
+    Type: String
+    Default: t2.micro
 
 Resources:
   UdacityS3ReadOnlyEC2:
@@ -110,9 +123,9 @@ Resources:
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
       IamInstanceProfile: !Ref ProfileWithRolesForOurApp
-      ImageId: !Ref Ami
-      KeyName: !Ref Keypair
-      InstanceType: t2.medium
+      ImageId: !Ref WebServerAmi
+      KeyName: !Ref WebServerKeypair
+      InstanceType: !Ref WebServerInstanceType
       SecurityGroups:
         - Ref: WebServerSecGroup
       BlockDeviceMappings:
@@ -195,8 +208,9 @@ Resources:
   BastionHost:
     Type: AWS::EC2::Instance
     Properties:
-      ImageId: "ami-0dc2d3e4c0f9ebd18"
-      KeyName: "jumpbox-key"
+      ImageId: !Ref JumpboxAmi
+      KeyName: !Ref JumpboxKeypair
+      InstanceType: !Ref JumpboxInstanceType
       NetworkInterfaces:
         - AssociatePublicIpAddress: "true"
           DeviceIndex: "0"
