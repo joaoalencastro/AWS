@@ -88,6 +88,8 @@ Resources:
       ImageId: ami-0747bdcabd34c712a
       KeyName: AWS_EC2_Demo_keypair
       InstanceType: t2.medium
+      SecurityGroups:
+        - Ref: WebServerSecGroup
       BlockDeviceMappings:
       - DeviceName: "/dev/sdk"
         Ebs:
