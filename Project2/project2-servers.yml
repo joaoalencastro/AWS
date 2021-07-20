@@ -105,17 +105,15 @@ Resources:
           aws s3 cp s3://udacity-demo-1/udacity.zip .
           unzip -o udacity.zip
 
-######################################
-# Alterar para rede priv e o número de instâncias
   WebServersGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
       VPCZoneIdentifier:
       - Fn::ImportValue: 
-          !Sub "${EnvironmentName}-PUB-NETS"
+          !Sub "${EnvironmentName}-PRIV-NETS"
       LaunchConfigurationName: !Ref WebLauchConfig
-      MinSize: '2'
-      MaxSize: '2'
+      MinSize: '4'
+      MaxSize: '4'
       TargetGroupARNs:
       - Ref: WebServerTargetGroup
 
