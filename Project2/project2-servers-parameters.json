@@ -6,5 +6,9 @@
     {
         "ParameterKey":"Keypair",
         "ParameterValue":"AWS_EC2_Demo_keypair"
+    },
+    {
+        "ParameterKey":"Ami",
+        "ParameterValue":"ami-0747bdcabd34c712a"
     }
 ]

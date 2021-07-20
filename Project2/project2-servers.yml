@@ -10,6 +10,9 @@ Parameters:
   Keypair:
     Description: Prefered public key for authentication
     Type: String
+  Ami:
+    Description: AMI to use
+    Type: String
 
 Resources:
   UdacityS3ReadOnlyEC2:
@@ -88,7 +91,8 @@ Resources:
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
       IamInstanceProfile: !Ref ProfileWithRolesForOurApp
-      ImageId: ami-0747bdcabd34c712a
+      ImageId: 
+        - Ref: Ami
       KeyName:
         - Ref: Keypair
       InstanceType: t2.medium
