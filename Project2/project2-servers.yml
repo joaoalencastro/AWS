@@ -7,6 +7,9 @@ Parameters:
   EnvironmentName:
     Description: Prefix for the project resources
     Type: String
+  Keypair:
+    Description: Prefered public key for authentication
+    Type: String
 
 Resources:
   UdacityS3ReadOnlyEC2:
@@ -86,7 +89,8 @@ Resources:
     Properties:
       IamInstanceProfile: !Ref ProfileWithRolesForOurApp
       ImageId: ami-0747bdcabd34c712a
-      KeyName: AWS_EC2_Demo_keypair
+      KeyName:
+        - Ref: Keypair
       InstanceType: t2.medium
       SecurityGroups:
         - Ref: WebServerSecGroup

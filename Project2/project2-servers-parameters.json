@@ -2,5 +2,9 @@
     {
         "ParameterKey":"EnvironmentName",
         "ParameterValue":"Project2"
+    },
+    {
+        "ParameterKey":"Keypair",
+        "ParameterValue":"AWS_EC2_Demo_keypair"
     }
 ]
