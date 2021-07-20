@@ -173,5 +173,9 @@ Resources:
         Fn::ImportValue:
           Fn::Sub: "${EnvironmentName}-VPCID"
 
-#Outputs: 
-  #Bonus points for useful outputs!
+Outputs: 
+  URL:
+    Description: A reference for the URL of the WebApp
+    Value: !GetAtt LoadBalancer.DNSName
+    Export:
+      Name: !Sub ${EnvironmentName}-URL
