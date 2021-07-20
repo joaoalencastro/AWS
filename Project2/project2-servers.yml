@@ -87,6 +87,25 @@ Resources:
         Fn::ImportValue:
           Fn::Sub: "${EnvironmentName}-VPCID"
 
+  BastionHostSecGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security Group for the jumpbox
+      GroupName: !Sub ${EnvironmentName}-BastionHostSecGroup
+      VpcId:
+        Fn::ImportValue:
+          Fn::Sub: "${EnvironmentName}-VPCID"
+      SecurityGroupEgress:
+      - IpProtocol: tcp
+        FromPort: 22
+        ToPort: 22
+        CidrIp: 0.0.0.0/0
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 22
+        ToPort: 22
+        CidrIp: 0.0.0.0/0
+
   WebLauchConfig:
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
@@ -172,6 +191,20 @@ Resources:
       VpcId: 
         Fn::ImportValue:
           Fn::Sub: "${EnvironmentName}-VPCID"
+
+  BastionHost:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: "ami-0dc2d3e4c0f9ebd18"
+      KeyName: "jumpbox-key"
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: "true"
+          DeviceIndex: "0"
+          GroupSet: 
+            - Ref: "BastionHostSecGroup"
+          SubnetId:
+            Fn::ImportValue:
+              Fn::Sub: ${EnvironmentName}-PUB1-SN
 
 Outputs: 
   URL:
