@@ -91,10 +91,8 @@ Resources:
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
       IamInstanceProfile: !Ref ProfileWithRolesForOurApp
-      ImageId: 
-        - Ref: Ami
-      KeyName:
-        - Ref: Keypair
+      ImageId: !Ref Ami
+      KeyName: !Ref Keypair
       InstanceType: t2.medium
       SecurityGroups:
         - Ref: WebServerSecGroup
