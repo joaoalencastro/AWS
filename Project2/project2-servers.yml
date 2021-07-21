@@ -92,39 +92,38 @@ Resources:
         FromPort: 80
         ToPort: 80
         CidrIp: 0.0.0.0/0
-      - IpProtocol: tcp
-        FromPort: 22
-        ToPort: 22
-        CidrIp: 0.0.0.0/0
+      # - IpProtocol: tcp
+      #   FromPort: 22
+      #   ToPort: 22
+      #   CidrIp: 0.0.0.0/0
       VpcId:
         Fn::ImportValue:
           Fn::Sub: "${EnvironmentName}-VPCID"
 
-  BastionHostSecGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: Security Group for the jumpbox
-      GroupName: !Sub ${EnvironmentName}-BastionHostSecGroup
-      VpcId:
-        Fn::ImportValue:
-          Fn::Sub: "${EnvironmentName}-VPCID"
-      SecurityGroupEgress:
-      - IpProtocol: tcp
-        FromPort: 22
-        ToPort: 22
-        CidrIp: 0.0.0.0/0
-      SecurityGroupIngress:
-      - IpProtocol: tcp
-        FromPort: 22
-        ToPort: 22
-        CidrIp: 0.0.0.0/0
+  # BastionHostSecGroup:
+  #   Type: AWS::EC2::SecurityGroup
+  #   Properties:
+  #     GroupDescription: Security Group for the jumpbox
+  #     GroupName: !Sub ${EnvironmentName}-BastionHostSecGroup
+  #     VpcId:
+  #       Fn::ImportValue:
+  #         Fn::Sub: "${EnvironmentName}-VPCID"
+  #     SecurityGroupEgress:
+  #     - IpProtocol: tcp
+  #       FromPort: 22
+  #       ToPort: 22
+  #       CidrIp: 0.0.0.0/0
+  #     SecurityGroupIngress:
+  #     - IpProtocol: tcp
+  #       FromPort: 22
+  #       ToPort: 22
+  #       CidrIp: 0.0.0.0/0
 
   WebLauchConfig:
     Type: AWS::AutoScaling::LaunchConfiguration
     Properties:
       IamInstanceProfile: !Ref ProfileWithRolesForOurApp
       ImageId: !Ref WebServerAmi
-      KeyName: !Ref WebServerKeypair
       InstanceType: !Ref WebServerInstanceType
       SecurityGroups:
         - Ref: WebServerSecGroup
@@ -205,20 +204,20 @@ Resources:
         Fn::ImportValue:
           Fn::Sub: "${EnvironmentName}-VPCID"
 
-  BastionHost:
-    Type: AWS::EC2::Instance
-    Properties:
-      ImageId: !Ref JumpboxAmi
-      KeyName: !Ref JumpboxKeypair
-      InstanceType: !Ref JumpboxInstanceType
-      NetworkInterfaces:
-        - AssociatePublicIpAddress: "true"
-          DeviceIndex: "0"
-          GroupSet: 
-            - Ref: "BastionHostSecGroup"
-          SubnetId:
-            Fn::ImportValue:
-              Fn::Sub: ${EnvironmentName}-PUB1-SN
+  # BastionHost:
+  #   Type: AWS::EC2::Instance
+  #   Properties:
+  #     ImageId: !Ref JumpboxAmi
+  #     KeyName: !Ref JumpboxKeypair
+  #     InstanceType: !Ref JumpboxInstanceType
+  #     NetworkInterfaces:
+  #       - AssociatePublicIpAddress: "true"
+  #         DeviceIndex: "0"
+  #         GroupSet: 
+  #           - Ref: "BastionHostSecGroup"
+  #         SubnetId:
+  #           Fn::ImportValue:
+  #             Fn::Sub: ${EnvironmentName}-PUB1-SN
 
 Outputs: 
   URL:
