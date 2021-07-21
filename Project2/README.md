@@ -1,5 +1,6 @@
-# Udacity's Project 2
+# Udacity's Project 2 
 ## Udagram
+### Version 2, after review
 
 Made by: João Fiuza de Alencastro
 This project is a result of the knowledge gained in the Infrastructure as Code section of the Udacity's Cloud DevOps Engineer course.

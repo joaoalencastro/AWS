@@ -92,6 +92,7 @@ Resources:
         FromPort: 80
         ToPort: 80
         CidrIp: 0.0.0.0/0
+      #   The piece of code below should only be used in a development environment!
       # - IpProtocol: tcp
       #   FromPort: 22
       #   ToPort: 22
@@ -100,6 +101,7 @@ Resources:
         Fn::ImportValue:
           Fn::Sub: "${EnvironmentName}-VPCID"
 
+  # The piece of code below should only be used in a development environment!
   # BastionHostSecGroup:
   #   Type: AWS::EC2::SecurityGroup
   #   Properties:
@@ -203,7 +205,8 @@ Resources:
       VpcId: 
         Fn::ImportValue:
           Fn::Sub: "${EnvironmentName}-VPCID"
-
+          
+  # The piece of code below should only be used in a development environment!
   # BastionHost:
   #   Type: AWS::EC2::Instance
   #   Properties:
